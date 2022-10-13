@@ -1,4 +1,4 @@
-FROM gradle:7-jdk18-alpine AS build
+FROM gradle:7-jdk18 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle :backend:app:shadowJar --no-daemon
