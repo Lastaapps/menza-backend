@@ -1,5 +1,6 @@
 package cz.lastaapps.app.config
 
+import io.ktor.server.application.*
 import io.ktor.server.config.*
 
 enum class Environment {
@@ -8,8 +9,8 @@ enum class Environment {
 
 data class ServerConfig(
     val host: String,
-    val port: Int,
-    val sslPort: Int,
+    val port: Int?,
+    val sslPort: Int?,
     val usesSSL: Boolean,
     val apiKeys: Set<String>,
     val environment: Environment,
@@ -19,9 +20,9 @@ data class ServerConfig(
     companion object {
         fun from(config: ApplicationConfig) = with(config) {
             ServerConfig(
-                property("app.deployment.host").getString(),
-                property("app.deployment.port").getString().toInt(),
-                property("app.deployment.sslPort").getString().toInt(),
+                host,
+                propertyOrNull("app.deployment.port")?.getString()?.toInt(),
+                propertyOrNull("app.deployment.sslPort")?.getString()?.toInt(),
                 property("app.useSSL").getString().toBoolean(),
                 property("app.apiKeys").getString()
                     .split(",").map { it.trim() }.filter { it.isNotBlank() }.toSet(),

@@ -100,7 +100,7 @@ fun Application.module() {
 
     if (config.usesSSL) {
         install(HttpsRedirect) {
-            sslPort = config.sslPort
+            sslPort = config.sslPort ?: error("You have to specify a secure port to redirect to HTTPS")
             permanentRedirect = true
         }
     }

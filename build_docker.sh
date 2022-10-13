@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t songbook .
+docker build -t menza .
