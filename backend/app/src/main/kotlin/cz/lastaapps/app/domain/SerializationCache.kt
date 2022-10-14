@@ -1,7 +1,7 @@
 package cz.lastaapps.app.domain
 
-import kotlinx.coroutines.flow.Flow
+import cz.lastaapps.app.domain.model.DishStatus
 
 interface SerializationCache {
-    fun getState(): Flow<String>
+    suspend fun cache(data: List<DishStatus>): String
 }

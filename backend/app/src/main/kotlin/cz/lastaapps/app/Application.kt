@@ -112,7 +112,7 @@ fun Application.module() {
             val remoteHost = call.request.origin.remoteHost
 //            val userAgent = call.request.headers["User-Agent"]
             val route = call.request.uri
-            "Status: $status, HTTP method: $httpMethod, Route: $route, Remote Host: $remoteHost"
+            "Status: $status, Method: $httpMethod, Route: $route, Remote Host: $remoteHost"
         }
     }
 

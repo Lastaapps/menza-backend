@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="Backend" type="JetRunConfigurationType">
+        <envs>
+            <env name="MENZA_API_KEY" value="&quot;96597a8b-254d-4f1c-99cd-4b273fc8efab&quot;"/>
+        </envs>
+        <option name="MAIN_CLASS_NAME" value="cz.lastaapps.app.MainKt"/>
+        <module name="Menza_backend.backend.app.main"/>
+        <option name="PROGRAM_PARAMETERS" value="-config=backend/application.conf"/>
+        <shortenClasspath name="NONE"/>
+        <method v="2">
+            <option name="Make" enabled="true"/>
+        </method>
+    </configuration>
+</component>
