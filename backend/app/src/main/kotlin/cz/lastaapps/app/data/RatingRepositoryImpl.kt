@@ -43,7 +43,9 @@ class RatingRepositoryImpl(
                 copy(ratingSum = ratingSum + rating, rateCount = rateCount + 1u)
             })
         }
+
         incRequests()
+
         return Unit.toResult()
     }
 
@@ -57,7 +59,9 @@ class RatingRepositoryImpl(
                 copy(soldOutCount = soldOutCount + 1u)
             })
         }
+
         incRequests()
+
         return Unit.toResult()
     }
 

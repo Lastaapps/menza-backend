@@ -8,6 +8,7 @@ import org.lighthousegames.logging.logging
 
 class ClearCronImpl(
     private val repo: RatingRepository,
+    private val statistics: RatingRepository,
     private val scope: CoroutineScope,
 ) : ClearCron {
     companion object {
@@ -21,6 +22,7 @@ class ClearCronImpl(
                 try {
                     log.i { "Starting job" }
                     repo.resetRepository()
+                    statistics.resetRepository()
                 } catch (e: Exception) {
                     log.e(e) { "Job failed" }
                 }
