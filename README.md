@@ -1,9 +1,13 @@
 # Menza backend
 
-This backend is responsible for handling dishes rating in 
+This backend is responsible for handling dishes rating in
 the [Menza CTU](https://github.com/Lastaapps/menza) Android app.
 
+This BE is meant primarily for CTU menzas, but if you want to use it
+for another purposes, just host it yourself or start an issue here.
+
 ## About
+
 The BE supports dish rating and dish sold out.
 It resets every midnight European time.
 It is written in the way, that any menza can be supported,
