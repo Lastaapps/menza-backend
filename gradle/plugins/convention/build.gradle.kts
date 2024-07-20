@@ -6,8 +6,8 @@ plugins {
 group = "cz.lastaapps.convention-plugins"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.jvmTarget.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.java.jvmTarget.get())
 }
 
 dependencies {

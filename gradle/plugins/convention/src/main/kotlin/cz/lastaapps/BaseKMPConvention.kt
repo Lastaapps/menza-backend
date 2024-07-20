@@ -6,7 +6,9 @@ import cz.lastaapps.extensions.multiplatform
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 class BaseKMPConvention : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
@@ -22,21 +24,16 @@ class BaseKMPConvention : Plugin<Project> {
 
         multiplatform {
 
-            sourceSets.all {
-                languageSettings.apply {
-                    languageVersion = libs.versions.kotlin.languageVersion.get()
-                    apiVersion = libs.versions.kotlin.languageVersion.get()
-                }
+            jvmToolchain {
+                languageVersion.set(JavaLanguageVersion.of(libs.versions.java.jvmTarget.get().toInt()))
             }
 
-            targets.whenObjectAdded {
-
+            compilerOptions {
+                languageVersion.set(KotlinVersion.fromVersion(libs.versions.kotlin.languageVersion.get()))
+                apiVersion.set(KotlinVersion.fromVersion(libs.versions.kotlin.languageVersion.get()))
             }
 
             jvm {
-                compilations.all {
-                    kotlinOptions.jvmTarget = libs.versions.java.jvmTarget.get()
-                }
                 testRuns.getByName("test").executionTask.configure {
                     useJUnitPlatform()
                     systemProperties["kotest.framework.parallelism"] = 4
@@ -50,7 +47,6 @@ class BaseKMPConvention : Plugin<Project> {
                         api(libs.kotlinx.collection)
                         api(libs.kotlinx.serializationJson)
                         api(libs.kmLogging)
-                        api(libs.fluidLocale)
                         api(libs.koin.core)
                     }
                 }

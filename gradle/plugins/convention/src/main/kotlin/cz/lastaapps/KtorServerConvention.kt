@@ -2,12 +2,13 @@ package cz.lastaapps
 
 import cz.lastaapps.extensions.alias
 import cz.lastaapps.extensions.implementation
+import cz.lastaapps.extensions.kotlinJvm
 import cz.lastaapps.extensions.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 class KtorServerConvention : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
@@ -19,11 +20,13 @@ class KtorServerConvention : Plugin<Project> {
             alias(libs.plugins.shadow)
         }
 
-        tasks.withType<KotlinCompile>() {
-            kotlinOptions {
-                languageVersion = libs.versions.kotlin.languageVersion.get()
-                apiVersion = libs.versions.kotlin.languageVersion.get()
-                kotlinOptions.jvmTarget = libs.versions.java.jvmTarget.get()
+        kotlinJvm {
+            jvmToolchain {
+                languageVersion.set(JavaLanguageVersion.of(libs.versions.java.jvmTarget.get().toInt()))
+            }
+            compilerOptions {
+                languageVersion.set(KotlinVersion.fromVersion(libs.versions.kotlin.languageVersion.get()))
+                apiVersion.set(KotlinVersion.fromVersion(libs.versions.kotlin.languageVersion.get()))
             }
         }
 

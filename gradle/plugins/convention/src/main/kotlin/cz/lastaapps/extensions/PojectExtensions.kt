@@ -7,6 +7,7 @@ import org.gradle.api.plugins.PluginManager
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.the
 import org.gradle.plugin.use.PluginDependency
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 
@@ -16,11 +17,18 @@ fun PluginManager.alias(plugin: Provider<PluginDependency>) {
     apply(plugin.get().pluginId)
 }
 
-val Project.multiplatform: KotlinMultiplatformExtension
+val Project.multiplatformExtension: KotlinMultiplatformExtension
     get() = kotlinExtension as KotlinMultiplatformExtension
 
+val Project.jvmExtension: KotlinJvmProjectExtension
+    get() = kotlinExtension as KotlinJvmProjectExtension
+
 fun Project.multiplatform(block: KotlinMultiplatformExtension.() -> Unit) {
-    multiplatform.apply(block)
+    multiplatformExtension.apply(block)
+}
+
+fun Project.kotlinJvm(block: KotlinJvmProjectExtension.() -> Unit) {
+    jvmExtension.apply(block)
 }
 
 fun Project.pluginManager(block: PluginManager.() -> Unit) {

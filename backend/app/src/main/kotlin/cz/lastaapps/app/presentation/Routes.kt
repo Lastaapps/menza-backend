@@ -3,15 +3,25 @@ package cz.lastaapps.app.presentation
 import cz.lastaapps.app.domain.model.dto.toDto
 import cz.lastaapps.app.domain.model.payload.RatePayload
 import cz.lastaapps.app.domain.model.payload.SoldOutPayload
-import cz.lastaapps.app.domain.usecase.*
+import cz.lastaapps.app.domain.usecase.CacheStateUseCase
+import cz.lastaapps.app.domain.usecase.GetRatingStateUseCase
+import cz.lastaapps.app.domain.usecase.GetStatisticsUseCase
+import cz.lastaapps.app.domain.usecase.RateUseCase
+import cz.lastaapps.app.domain.usecase.SoldOutUseCase
 import cz.lastaapps.base.Result
 import cz.lastaapps.base.error.util.respondWithError
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.ContentType
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.server.auth.authenticate
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+import io.ktor.server.routing.route
+import io.ktor.server.routing.routing
 
 internal class Routes(
     private val app: Application,

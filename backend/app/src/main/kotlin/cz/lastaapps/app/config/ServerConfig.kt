@@ -1,7 +1,7 @@
 package cz.lastaapps.app.config
 
-import io.ktor.server.application.*
-import io.ktor.server.config.*
+import io.ktor.server.application.host
+import io.ktor.server.config.ApplicationConfig
 
 enum class Environment {
     PRODUCTION, DEVELOPMENT;

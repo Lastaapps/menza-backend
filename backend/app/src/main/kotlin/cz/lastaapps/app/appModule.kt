@@ -8,7 +8,16 @@ import cz.lastaapps.app.domain.ClearCron
 import cz.lastaapps.app.domain.RatingRepository
 import cz.lastaapps.app.domain.SerializationCache
 import cz.lastaapps.app.domain.StatisticsRepository
-import cz.lastaapps.app.domain.usecase.*
+import cz.lastaapps.app.domain.usecase.CacheStateUseCase
+import cz.lastaapps.app.domain.usecase.CacheStateUseCaseImpl
+import cz.lastaapps.app.domain.usecase.GetRatingStateUseCase
+import cz.lastaapps.app.domain.usecase.GetRatingStateUseCaseImpl
+import cz.lastaapps.app.domain.usecase.GetStatisticsUseCase
+import cz.lastaapps.app.domain.usecase.GetStatisticsUseCaseImpl
+import cz.lastaapps.app.domain.usecase.RateUseCase
+import cz.lastaapps.app.domain.usecase.RateUseCaseImpl
+import cz.lastaapps.app.domain.usecase.SoldOutUseCase
+import cz.lastaapps.app.domain.usecase.SoldOutUseCaseImpl
 import cz.lastaapps.app.presentation.Routes
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
