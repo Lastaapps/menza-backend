@@ -3,7 +3,6 @@ package cz.lastaapps.app
 import cz.lastaapps.app.config.ServerConfig
 import cz.lastaapps.app.domain.model.auth.AppPrincipal
 import cz.lastaapps.app.presentation.Routes
-import dev.forst.ktor.apikey.apiKey
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
@@ -12,7 +11,7 @@ import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.plugins.autohead.AutoHeadResponse
-import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.compression.deflate
 import io.ktor.server.plugins.compression.gzip
@@ -31,8 +30,9 @@ import kotlinx.serialization.json.Json
 import org.koin.ktor.ext.get
 import org.koin.ktor.plugin.Koin
 
-
-fun main(args: Array<String>) = io.ktor.server.cio.EngineMain.main(args)
+fun main(args: Array<String>) =
+    io.ktor.server.cio.EngineMain
+        .main(args)
 
 @Suppress("unused")
 fun Application.module() {
@@ -52,11 +52,13 @@ fun Application.module() {
     }
 
     install(ContentNegotiation) {
-        json(Json {
-            encodeDefaults = true
-//            ignoreUnknownKeys = true
-            prettyPrint = true
-        })
+        json(
+            Json {
+                encodeDefaults = true
+                // ignoreUnknownKeys = true
+                prettyPrint = true
+            },
+        )
     }
 
     install(AutoHeadResponse)

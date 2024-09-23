@@ -23,16 +23,17 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-internal val appModule = module {
-    singleOf(::RatingRepositoryImpl) { bind<RatingRepository>() }
-    singleOf(::ClearCronImpl) { bind<ClearCron>() }
-    singleOf(::SerializationCacheImpl) { bind<SerializationCache>() }
-    singleOf(::Routes)
-    singleOf(::StatisticsRepositoryImpl) { bind<StatisticsRepository>() }
+internal val appModule =
+    module {
+        singleOf(::RatingRepositoryImpl) { bind<RatingRepository>() }
+        singleOf(::ClearCronImpl) { bind<ClearCron>() }
+        singleOf(::SerializationCacheImpl) { bind<SerializationCache>() }
+        singleOf(::Routes)
+        singleOf(::StatisticsRepositoryImpl) { bind<StatisticsRepository>() }
 
-    singleOf(::GetRatingStateUseCaseImpl) { bind<GetRatingStateUseCase>() }
-    singleOf(::RateUseCaseImpl) { bind<RateUseCase>() }
-    singleOf(::SoldOutUseCaseImpl) { bind<SoldOutUseCase>() }
-    singleOf(::GetStatisticsUseCaseImpl) { bind<GetStatisticsUseCase>() }
-    singleOf(::CacheStateUseCaseImpl) { bind<CacheStateUseCase>() }
-}
+        singleOf(::GetRatingStateUseCaseImpl) { bind<GetRatingStateUseCase>() }
+        singleOf(::RateUseCaseImpl) { bind<RateUseCase>() }
+        singleOf(::SoldOutUseCaseImpl) { bind<SoldOutUseCase>() }
+        singleOf(::GetStatisticsUseCaseImpl) { bind<GetStatisticsUseCase>() }
+        singleOf(::CacheStateUseCaseImpl) { bind<CacheStateUseCase>() }
+    }

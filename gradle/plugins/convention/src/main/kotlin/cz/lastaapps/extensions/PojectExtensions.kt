@@ -39,9 +39,11 @@ fun Project.java(block: JavaPluginExtension.() -> Unit) {
     extension("java", block)
 }
 
-inline fun <reified T : Any> Project.extension(name: String, block: Action<T>) {
+inline fun <reified T : Any> Project.extension(
+    name: String,
+    block: Action<T>,
+) {
     extensions.configure(name, block)
 //    extensions.findByName(name)?.let { it as? T }?.apply(block)
 //        ?: error("Extension $name missing")
 }
-

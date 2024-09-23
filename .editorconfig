@@ -8,9 +8,12 @@ ktlint_code_style = ktlint_official
 # Indentation
 indent_size = 4
 indent_style = space
+max_line_lengt = 100
 
 # Trailing Comma
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
-trailing-comma-on-call-site = true
-trailing-comma-on-declaration-site = true
+
+# modules for DI
+[*Module.kt]
+ktlint_standard_filename = disabled
