@@ -1,5 +1,6 @@
 package cz.lastaapps.app.presentation
 
+import arrow.core.Either
 import cz.lastaapps.app.domain.model.dto.toDto
 import cz.lastaapps.app.domain.model.payload.RatePayload
 import cz.lastaapps.app.domain.model.payload.SoldOutPayload
@@ -8,11 +9,9 @@ import cz.lastaapps.app.domain.usecase.GetRatingStateUseCase
 import cz.lastaapps.app.domain.usecase.GetStatisticsUseCase
 import cz.lastaapps.app.domain.usecase.RateUseCase
 import cz.lastaapps.app.domain.usecase.SoldOutUseCase
-import cz.lastaapps.base.Result
 import cz.lastaapps.base.error.util.respondWithError
 import io.ktor.http.ContentType
 import io.ktor.server.application.Application
-import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -50,8 +49,8 @@ internal class Routes(
             val params = RateUseCase.Params(payload.id, payload.rating)
 
             when (val res = rate(params)) {
-                is Result.Success -> call.respondText(cached(), ContentType.Application.Json)
-                is Result.Error -> call.respondWithError(res)
+                is Either.Right -> call.respondText(cached(), ContentType.Application.Json)
+                is Either.Left -> call.respondWithError(res)
             }
         }
     }
@@ -62,8 +61,8 @@ internal class Routes(
             val params = SoldOutUseCase.Params(payload.id)
 
             when (val res = soldOut(params)) {
-                is Result.Success -> call.respondText(cached(), ContentType.Application.Json)
-                is Result.Error -> call.respondWithError(res)
+                is Either.Right -> call.respondText(cached(), ContentType.Application.Json)
+                is Either.Left -> call.respondWithError(res)
             }
         }
     }

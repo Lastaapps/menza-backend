@@ -1,12 +1,14 @@
 package cz.lastaapps.app.data
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import cz.lastaapps.app.config.ServerConfig
 import cz.lastaapps.app.domain.RatingRepository
 import cz.lastaapps.app.domain.model.DishProgress
 import cz.lastaapps.app.domain.model.DishStatus
-import cz.lastaapps.base.Result
+import cz.lastaapps.base.Outcome
 import cz.lastaapps.base.error.RatingError
-import cz.lastaapps.base.toResult
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,14 +33,14 @@ class RatingRepositoryImpl(
     override suspend fun rate(
         id: String,
         rating: UInt,
-    ): Result<Unit> {
+    ): Outcome<Unit> {
         when (val res = validateId(id)) {
-            is Result.Error -> return res
-            is Result.Success -> {}
+            is Either.Left -> return res
+            is Either.Right -> {}
         }
 
         if (rating !in 1u..5u) {
-            return RatingError.RatingInvalidRange().toResult()
+            return RatingError.RatingInvalidRange().left()
         }
 
         map.update {
@@ -52,13 +54,13 @@ class RatingRepositoryImpl(
 
         incRequests()
 
-        return Unit.toResult()
+        return Unit.right()
     }
 
-    override suspend fun soldOut(id: String): Result<Unit> {
+    override suspend fun soldOut(id: String): Outcome<Unit> {
         when (val res = validateId(id)) {
-            is Result.Error -> return res
-            is Result.Success -> {}
+            is Either.Left -> return res
+            is Either.Right -> {}
         }
         map.update {
             it.put(
@@ -71,23 +73,23 @@ class RatingRepositoryImpl(
 
         incRequests()
 
-        return Unit.toResult()
+        return Unit.right()
     }
 
-    private fun validateId(id: String): Result<Unit> {
+    private fun validateId(id: String): Outcome<Unit> {
         if (id.length != 8) {
-            return RatingError.InvalidIdLength().toResult()
+            return RatingError.InvalidIdLength().left()
         }
 
         if (config.maxPerDay < requestCounter) {
-            return RatingError.RequestQuotaReached().toResult()
+            return RatingError.RequestQuotaReached().left()
         }
 
         if (!value.containsKey(id) && value.keys.size > config.maxDishes) {
-            return RatingError.DishQuotaReached().toResult()
+            return RatingError.DishQuotaReached().left()
         }
 
-        return Unit.toResult()
+        return Unit.right()
     }
 
     private suspend fun incRequests() = mutex.withLock { requestCounter++ }

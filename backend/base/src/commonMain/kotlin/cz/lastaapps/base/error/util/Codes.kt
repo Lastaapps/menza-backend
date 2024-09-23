@@ -1,10 +1,10 @@
 package cz.lastaapps.base.error.util
 
-import cz.lastaapps.base.ErrorResult
+import cz.lastaapps.base.ErrorOutcome
 import cz.lastaapps.base.error.RatingError
 import io.ktor.http.HttpStatusCode
 
-internal val ErrorResult.httpCode: HttpStatusCode
+internal val ErrorOutcome.httpCode: HttpStatusCode
     get() =
         when (this) {
             is RatingError -> httpCode

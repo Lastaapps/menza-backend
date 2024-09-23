@@ -65,6 +65,11 @@ class BaseKMPConvention : Plugin<Project> {
                             api(libs.kotlinx.serializationJson)
                             api(libs.kmLogging)
                             api(libs.koin.core)
+
+                            implementation(project.dependencies.platform(libs.arrowkt.bom))
+                            implementation(libs.arrowkt.core)
+                            implementation(libs.arrowkt.fx.coroutines)
+                            implementation(libs.arrowkt.fx.stm)
                         }
                     }
                     getByName("commonTest") {

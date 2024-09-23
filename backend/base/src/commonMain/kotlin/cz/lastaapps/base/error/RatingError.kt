@@ -1,8 +1,11 @@
 package cz.lastaapps.base.error
 
-import cz.lastaapps.base.ErrorResult
+import cz.lastaapps.base.ErrorOutcome
 
-sealed class RatingError(message: String? = null, throwable: Throwable? = null) : ErrorResult(message, throwable) {
+sealed class RatingError(
+    message: String? = null,
+    throwable: Throwable? = null,
+) : ErrorOutcome(message, throwable) {
     class RatingInvalidRange : RatingError("Rating must be an integer between 1 and 5")
 
     class InvalidIdLength : RatingError("Id length must be 8")

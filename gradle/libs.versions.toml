@@ -14,6 +14,10 @@ ktor = "3.0.0-rc-1"
 shadow = "8.1.1"
 
 [libraries]
+arrowkt-bom = "io.arrow-kt:arrow-stack:1.2.4"
+arrowkt-core = { module = "io.arrow-kt:arrow-core" }
+arrowkt-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
+arrowkt-fx-stm = { module = "io.arrow-kt:arrow-fx-stm" }
 gradlePlugins-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradlePlugins-shadow = { module = "com.github.johnrengelman:shadow", version.ref = "shadow" }
 junit5-bom = { module = "org.junit:junit-bom", version.ref = "junit5-bom" }

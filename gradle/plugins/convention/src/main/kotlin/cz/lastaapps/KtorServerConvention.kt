@@ -70,6 +70,11 @@ class KtorServerConvention : Plugin<Project> {
                 implementation(libs.ktor.server.jsonSerialization)
                 implementation(libs.ktor.server.statusPages)
                 implementation(libs.ktor.server.sesstions)
+
+                implementation(platform(libs.arrowkt.bom))
+                implementation(libs.arrowkt.core)
+                implementation(libs.arrowkt.fx.coroutines)
+                implementation(libs.arrowkt.fx.stm)
             }
         }
 }

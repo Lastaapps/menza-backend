@@ -1,7 +1,7 @@
 package cz.lastaapps.app.domain
 
 import cz.lastaapps.app.domain.model.DishStatus
-import cz.lastaapps.base.Result
+import cz.lastaapps.base.Outcome
 import kotlinx.coroutines.flow.Flow
 
 interface RatingRepository {
@@ -10,9 +10,9 @@ interface RatingRepository {
     suspend fun rate(
         id: String,
         rating: UInt,
-    ): Result<Unit>
+    ): Outcome<Unit>
 
-    suspend fun soldOut(id: String): Result<Unit>
+    suspend fun soldOut(id: String): Outcome<Unit>
 
     fun getState(): Flow<List<DishStatus>>
 }
