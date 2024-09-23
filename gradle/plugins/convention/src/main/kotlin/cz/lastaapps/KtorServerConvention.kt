@@ -19,6 +19,7 @@ class KtorServerConvention : Plugin<Project> {
                 alias(libs.plugins.kotlin.serialization)
                 alias(libs.plugins.java.kotlin)
                 alias(libs.plugins.shadow)
+                alias(libs.plugins.ktlint)
             }
 
             kotlinJvm {

@@ -8,8 +8,7 @@ interface GetRatingStateUseCase : UseCaseNoParams<String>
 
 class GetRatingStateUseCaseImpl(
     private val statistics: StatisticsRepository,
-    private val cached: CacheStateUseCase
+    private val cached: CacheStateUseCase,
 ) : GetRatingStateUseCase, UseCaseNoParamsImpl<String>() {
-    override suspend fun doWork(): String =
-        cached().also { statistics.incStatus() }
+    override suspend fun doWork(): String = cached().also { statistics.incStatus() }
 }

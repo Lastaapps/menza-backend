@@ -18,5 +18,4 @@ internal data class StatisticsDto(
     val statistics: UInt,
 )
 
-internal fun RepoStatistics.toDto() =
-    StatisticsDto(ratings, average, soldOut, state, statistics)
+internal fun RepoStatistics.toDto() = StatisticsDto(ratings, average, soldOut, state, statistics)

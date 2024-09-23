@@ -8,14 +8,14 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class SerializationCacheImpl : SerializationCache {
-
     private val mutex = Mutex()
     private var cacheKey: List<DishStatus>? = null
     private var cacheValue = ""
 
-    override suspend fun cache(data: List<DishStatus>): String = mutex.withLock {
-        if (data == cacheKey) return cacheValue
-        cacheKey = data
-        Json.encodeToString(data).also { cacheValue = it }
-    }
+    override suspend fun cache(data: List<DishStatus>): String =
+        mutex.withLock {
+            if (data == cacheKey) return cacheValue
+            cacheKey = data
+            Json.encodeToString(data).also { cacheValue = it }
+        }
 }

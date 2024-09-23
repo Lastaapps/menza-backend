@@ -12,6 +12,5 @@ internal class CacheStateUseCaseImpl(
     private val repo: RatingRepository,
     private val cache: SerializationCache,
 ) : CacheStateUseCase, UseCaseNoParamsImpl<String>() {
-    override suspend fun doWork(): String =
-        cache.cache(repo.getState().first())
+    override suspend fun doWork(): String = cache.cache(repo.getState().first())
 }

@@ -2,13 +2,13 @@ package cz.lastaapps.base.error.util
 
 import cz.lastaapps.base.ErrorResult
 import cz.lastaapps.base.Result
-import io.ktor.server.application.*
-import io.ktor.server.response.*
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.response.respond
 import kotlinx.serialization.Serializable
 
 // to prevent unintentional responding with result and not its content
-@Suppress("unused", "UNUSED_PARAMETER")
-fun <T : Any> ApplicationCall.respond(res: Result<T>): Nothing = error("Cannot respond with pure result")
+@Suppress("unused", "UNUSED_PARAMETER", "UnusedReceiverParameter")
+fun <T : Any> ApplicationCall.respond(res: Result<T>): Nothing = error("Cannot respond with result only")
 
 suspend inline fun <T : Any> ApplicationCall.respondWithError(error: Result.Error<T>) = respondWithError(error.error)
 
