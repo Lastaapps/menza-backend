@@ -1,6 +1,6 @@
-package cz.lastaapps.app.data
+package cz.lastaapps.app.data.impl
 
-import cz.lastaapps.app.domain.StatisticsRepository
+import cz.lastaapps.app.data.StatisticsRepository
 import cz.lastaapps.app.domain.model.RepoStatistics
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -13,12 +13,7 @@ internal class StatisticsRepositoryImpl : StatisticsRepository {
         mutex.withLock { statistics = statistics.block() }
     }
 
-    override suspend fun incRating(rating: UInt) =
-        update {
-            copy(total = total + rating, ratings = ratings + 1u)
-        }
-
-    override suspend fun incSoldOut() = update { copy(soldOut = soldOut + 1u) }
+    override suspend fun incRating() = update { copy(ratings = ratings + 1u) }
 
     override suspend fun incStatistics() = update { copy(statistics = statistics + 1u) }
 

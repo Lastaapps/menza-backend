@@ -1,22 +1,24 @@
 package cz.lastaapps.app.presentation
 
 import arrow.core.Either
-import cz.lastaapps.app.domain.model.dto.toDto
-import cz.lastaapps.app.domain.model.payload.RatePayload
-import cz.lastaapps.app.domain.model.payload.SoldOutPayload
-import cz.lastaapps.app.domain.usecase.CacheStateUseCase
+import arrow.core.raise.either
+import cz.lastaapps.app.domain.model.DishName
+import cz.lastaapps.app.domain.model.MenzaID
+import cz.lastaapps.app.domain.model.RatingRequest
 import cz.lastaapps.app.domain.usecase.GetRatingStateUseCase
 import cz.lastaapps.app.domain.usecase.GetStatisticsUseCase
 import cz.lastaapps.app.domain.usecase.RateUseCase
-import cz.lastaapps.app.domain.usecase.SoldOutUseCase
+import cz.lastaapps.app.presentation.model.dto.toDto
+import cz.lastaapps.app.presentation.model.payload.RatePayload
+import cz.lastaapps.app.presentation.model.payload.toDomain
+import cz.lastaapps.base.Outcome
 import cz.lastaapps.base.error.util.respondWithError
-import io.ktor.http.ContentType
 import io.ktor.server.application.Application
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
-import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.RoutingCall
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
@@ -24,18 +26,15 @@ import io.ktor.server.routing.routing
 
 internal class Routes(
     private val app: Application,
-    private val getState: GetRatingStateUseCase,
-    private val cached: CacheStateUseCase,
-    private val rate: RateUseCase,
-    private val soldOut: SoldOutUseCase,
-    private val statistics: GetStatisticsUseCase,
+    private val rateUC: RateUseCase,
+    private val getStateUC: GetRatingStateUseCase,
+    private val statisticsUC: GetStatisticsUseCase,
 ) {
     fun register() {
         app.routing {
             authenticate {
                 route("api/v1") {
                     rateEP()
-                    soldOutEP()
                     statusEP()
                     statisticsEP()
                 }
@@ -44,38 +43,44 @@ internal class Routes(
     }
 
     private fun Route.rateEP() {
-        post("rate") {
+        post("rate/{menza_id}/{dish_name}") {
             val payload = call.receive<RatePayload>()
-            val params = RateUseCase.Params(payload.id, payload.rating)
-
-            when (val res = rate(params)) {
-                is Either.Right -> call.respondText(cached(), ContentType.Application.Json)
-                is Either.Left -> call.respondWithError(res)
+            val res = either {
+                val menzaID = MenzaID.fromString(call.parameters["menza_id"]!!).bind()
+                val dishName = DishName.fromString(call.parameters["dish_name"]!!).bind()
+                val request = RatingRequest(
+                    menzaID = menzaID,
+                    dishName = dishName,
+                    kinds = payload.toDomain().bind(),
+                )
+                rateUC(RateUseCase.Params(request)).bind()
             }
-        }
-    }
 
-    private fun Route.soldOutEP() {
-        post("sold-out") {
-            val payload = call.receive<SoldOutPayload>()
-            val params = SoldOutUseCase.Params(payload.id)
-
-            when (val res = soldOut(params)) {
-                is Either.Right -> call.respondText(cached(), ContentType.Application.Json)
-                is Either.Left -> call.respondWithError(res)
-            }
+            call.respondOutcome(res.map { it.toDto() })
         }
     }
 
     private fun Route.statusEP() {
-        get("status") {
-            call.respondText(getState(), ContentType.Application.Json)
+        get("status/{menza_id}") {
+            val res = either {
+                val menzaID = MenzaID.fromString(call.parameters["menza_id"]!!).bind()
+                getStateUC(GetRatingStateUseCase.Param(menzaID))
+            }
+
+            call.respondOutcome(res.map { it.toDto() })
         }
     }
 
     private fun Route.statisticsEP() {
         get("statistics") {
-            call.respond(statistics().toDto())
+            call.respond(statisticsUC().toDto())
+        }
+    }
+
+    private suspend inline fun <reified T : Any> RoutingCall.respondOutcome(res: Outcome<T>) {
+        when (res) {
+            is Either.Right -> respond(res.value)
+            is Either.Left -> respondWithError(res)
         }
     }
 }

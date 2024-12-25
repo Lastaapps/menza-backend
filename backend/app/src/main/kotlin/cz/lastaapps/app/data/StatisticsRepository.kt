@@ -1,11 +1,9 @@
-package cz.lastaapps.app.domain
+package cz.lastaapps.app.data
 
 import cz.lastaapps.app.domain.model.RepoStatistics
 
 interface StatisticsRepository {
-    suspend fun incRating(rating: UInt)
-
-    suspend fun incSoldOut()
+    suspend fun incRating()
 
     suspend fun incStatistics()
 

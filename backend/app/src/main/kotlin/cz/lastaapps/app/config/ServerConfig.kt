@@ -15,6 +15,7 @@ data class ServerConfig(
     val usesSSL: Boolean,
     val apiKeys: Set<String>,
     val environment: Environment,
+    val maxMenzas: Int,
     val maxDishes: Int,
     val maxPerDay: Int,
 ) {
@@ -22,25 +23,26 @@ data class ServerConfig(
         fun from(config: ApplicationConfig) =
             with(config) {
                 ServerConfig(
-                    host,
-                    propertyOrNull("app.deployment.port")?.getString()?.toInt(),
-                    propertyOrNull("app.deployment.sslPort")?.getString()?.toInt(),
-                    property("app.useSSL").getString().toBoolean(),
-                    property("app.apiKeys")
+                    host = host,
+                    port = propertyOrNull("app.deployment.port")?.getString()?.toInt(),
+                    sslPort = propertyOrNull("app.deployment.sslPort")?.getString()?.toInt(),
+                    usesSSL = property("app.useSSL").getString().toBoolean(),
+                    apiKeys = property("app.apiKeys")
                         .getString()
                         .split(",")
                         .map { it.trim() }
                         .filter { it.isNotBlank() }
                         .toSet(),
-                    property("app.environment").getString().let {
+                    environment = property("app.environment").getString().let {
                         when (it) {
                             "prod" -> Environment.PRODUCTION
                             "dev" -> Environment.DEVELOPMENT
                             else -> error("Unsupported env: $it")
                         }
                     },
-                    property("app.maxDishes").getString().toInt(),
-                    property("app.maxPerDay").getString().toInt(),
+                    maxMenzas = property("app.maxMenzas").getString().toInt(),
+                    maxDishes = property("app.maxDishes").getString().toInt(),
+                    maxPerDay = property("app.maxPerDay").getString().toInt(),
                 )
             }
     }

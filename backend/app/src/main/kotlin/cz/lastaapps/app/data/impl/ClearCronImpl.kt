@@ -1,7 +1,7 @@
-package cz.lastaapps.app.data
+package cz.lastaapps.app.data.impl
 
-import cz.lastaapps.app.domain.ClearCron
-import cz.lastaapps.app.domain.RatingRepository
+import cz.lastaapps.app.data.ClearCron
+import cz.lastaapps.app.data.RatingRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging

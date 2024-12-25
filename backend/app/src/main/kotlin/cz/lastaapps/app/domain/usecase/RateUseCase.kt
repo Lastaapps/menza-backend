@@ -1,27 +1,28 @@
 package cz.lastaapps.app.domain.usecase
 
-import arrow.core.Either
-import cz.lastaapps.app.domain.RatingRepository
-import cz.lastaapps.app.domain.StatisticsRepository
+import cz.lastaapps.app.data.RatingRepository
+import cz.lastaapps.app.data.StatisticsRepository
+import cz.lastaapps.app.domain.model.DishStatus
+import cz.lastaapps.app.domain.model.RatingRequest
 import cz.lastaapps.base.Outcome
 import cz.lastaapps.base.usecase.UCParam
 import cz.lastaapps.base.usecase.UseCaseOutcome
 import cz.lastaapps.base.usecase.UseCaseOutcomeImpl
+import kotlinx.coroutines.flow.first
 
-interface RateUseCase : UseCaseOutcome<RateUseCase.Params, Unit> {
+interface RateUseCase : UseCaseOutcome<RateUseCase.Params, List<DishStatus>> {
     data class Params(
-        val id: String,
-        val rating: UInt,
+        val ratingRequest: RatingRequest,
     ) : UCParam
 }
 
 internal class RateUseCaseImpl(
     private val repo: RatingRepository,
     private val statistics: StatisticsRepository,
-) : UseCaseOutcomeImpl<RateUseCase.Params, Unit>(),
+) : UseCaseOutcomeImpl<RateUseCase.Params, List<DishStatus>>(),
     RateUseCase {
-    override suspend fun doWork(params: RateUseCase.Params): Outcome<Unit> =
-        repo.rate(params.id, params.rating).also {
-            if (it is Either.Right) statistics.incRating(params.rating)
-        }
+    override suspend fun doWork(params: RateUseCase.Params): Outcome<List<DishStatus>> =
+        repo.rate(params.ratingRequest).onRight {
+            statistics.incRating()
+        }.map { repo.getState(params.ratingRequest.menzaID).first() }
 }

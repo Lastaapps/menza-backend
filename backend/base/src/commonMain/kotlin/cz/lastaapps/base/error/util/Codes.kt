@@ -16,8 +16,12 @@ private val RatingError.httpCode: HttpStatusCode
         when (this) {
             is RatingError.RatingInvalidRange,
             is RatingError.InvalidIdLength,
+            is RatingError.InvalidDishName,
+            is RatingError.InvalidMenzaID,
+            is RatingError.InvalidRatingValue,
             -> HttpStatusCode.BadRequest
 
+            is RatingError.MenzaQuotaReached,
             is RatingError.DishQuotaReached,
             is RatingError.RequestQuotaReached,
             -> HttpStatusCode.TooManyRequests
