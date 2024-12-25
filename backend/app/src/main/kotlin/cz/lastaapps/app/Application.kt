@@ -1,7 +1,6 @@
 package cz.lastaapps.app
 
 import cz.lastaapps.app.config.ServerConfig
-import cz.lastaapps.app.domain.model.auth.AppPrincipal
 import cz.lastaapps.app.presentation.Routes
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
@@ -70,7 +69,6 @@ fun Application.module() {
             validate { keyFromHeader ->
                 keyFromHeader
                     .takeIf { it in config.apiKeys || config.apiKeys.isEmpty() }
-                    ?.let { AppPrincipal(it) }
             }
         }
     }
