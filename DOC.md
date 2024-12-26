@@ -2,39 +2,43 @@
 
 ### Own hosting
 
-Please contact me and don't create your own BE instance,
-so the rating is not decentralized. But if you want, you can do so.
+Please contact me and don't create your own BE instance
+if you plan on using the BE for CTU canteens.
 Project is Docker ready, just update the `application.conf`.
 See docs inside the template file in the `backend/` folder.
 
 ### Auth - Api key
 
 To access BE, you have to include the `X-Api-Key` header in your requests.
-
-If you want to use the official BE hosted by me, write me a message
-on Telegram ([@to_urcite_ty_kokos](https://t.me/to_urcite_ty_kokos)).
-I require to be in contact with you,
-so I can inform you about important BE changes.
-I will give you a key and BE url with no problems,
-don't steal keys from other apps please.
+If you want to use my (official) BE hosted, create a GitHub issue.
+I want to be in contact with you,
+so I can inform you about important BE breaking changes in advance.
+I will give you a key and BE url with no hesitations,
+don't steal keys from my other apps please.
 
 ### ID generation
 
-I saw no point in storing dish names on BE, so all the endpoints below accept
-hashed dish ids.
+The later endpoints use multiple types of ids.
+Here we list how the ids are generated.
+The following lines are only standards the Android Menza app is using
+and I recommend you follow them. For other canteens feel free
+to make your own sensible system and document it here.
 
-You compute the dish id according this formula:
+#### Menza ID
 
-```kotlin
-id = provider + "_" + menza_name + "_" + dish_name
-id = SHA1(id.bytes("UTF-8"))
-id = BASE64.encode(id)
-return id.take(8) // the first 8 chars
-```
+Menza ID is always prefixed by its provider.
+Either `CTU_` or `BUFFET_` values are the valid options for now.
 
-Where all the args are trimmed. The `provider` field is always `CTU` (for now).
+The rest of the id goes as follows.
+For CTU, numeric ID from Agata is used.
+For Strahov canteen the ID is `CTU_1`.
+For Buffets either `FEL` or `FS` is appended.
 
-Server checks if exactly 8 chars are sent.
+#### Dish ID
+
+ID is always a string.
+For CTU, dish ID from Agata is used.
+For buffet, SHA1 hash of the dish name is used.
 
 ### Endpoints
 
@@ -42,58 +46,79 @@ For server url check the Api key section.
 
 #### Rate endpoint
 
-`POST /api/v1/rate`
+`POST /api/v1/rate/{menzaID}`
 
 ```json
 {
-  "id": "12345678",
+  "dishID": "12345",
+  "nameCs": "jmeno_jidla",
+  "nameEn": "dish_name",
   // int [1 - 5]
-  "rating": 5
+  "taste": 5,
+  "portion": 1,
+  "worthiness": 3
 }
 ```
 
 Response is the same as the status endpoint.
 
-#### Sold-out endpoint
-
-`POST /api/v1/sold-out`
-
-```json
-{
-  "id": "12345678"
-}
-```
-
-Response is the same as the status endpoint.
 
 #### Status endpoint
 
-`GET /api/v1/status`
+The endpoint returns current rating status for the menza.
+All the fields are self-explanatory except for the combined field.
+Audience shows the number of people that participated in the given category.
+Count is the number of ratings considered in the category (used for average).
+The combined field is as the name suggest combination or sum of the other fields.
+
+`GET /api/v1/status/{menzaID}`
 `200 OK`
 
 ```json
 [
-  {
-    "id": "12345678",
-    "ratingSum": 5,
-    "rateCount": 1,
-    "rating": 5.0,
-    "soldOutCount": 0
-  }
+    {
+        "id": "12345",
+        "nameCs": "jmeno_jidla",
+        "nameEn": "dish_name",
+        "combined": {
+            "sum": 80,
+            "count": 20,
+            "audience": 7,
+            "average": 4.0
+        },
+        "taste": {
+            "sum": 35,
+            "count": 7,
+            "audience": 7,
+            "average": 5.0
+        },
+        "portion": {
+            "sum": 24,
+            "count": 6,
+            "audience": 6,
+            "average": 4.0
+        },
+        "worthiness": {
+            "sum": 21,
+            "count": 7,
+            "audience": 7,
+            "average": 3.0
+        }
+    }
 ]
 ```
 
 #### Statistics endpoint
+
+The endpoints provide information about the BE usage.
 
 `GET /api/v1/statistics`
 `200 OK`
 
 ```json
 {
-  "ratings": 1,
-  "average": 1.0,
-  "sold_out": 0,
-  "state_requests": 1,
-  "statistics_requests": 1
+    "rating_requests": 1,
+    "state_requests": 2,
+    "statistics_requests": 1
 }
 ```
