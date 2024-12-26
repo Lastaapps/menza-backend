@@ -19,6 +19,9 @@ private val RatingError.httpCode: HttpStatusCode
             is RatingError.InvalidDishName,
             is RatingError.InvalidMenzaID,
             is RatingError.InvalidRatingValue,
+            is RatingError.InvalidDishID,
+            is RatingError.NoDishIdNorNameDefined,
+            is RatingError.UnknownDishName,
             -> HttpStatusCode.BadRequest
 
             is RatingError.MenzaQuotaReached,

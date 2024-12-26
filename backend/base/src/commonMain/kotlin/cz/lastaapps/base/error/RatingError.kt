@@ -18,7 +18,13 @@ sealed class RatingError(
 
     class InvalidMenzaID : RatingError("Invalid menza id")
 
+    class InvalidDishID : RatingError("Invalid dish id")
+
     class InvalidDishName : RatingError("Invalid dish name")
 
     class InvalidRatingValue : RatingError("Invalid rating value")
+
+    class NoDishIdNorNameDefined : RatingError("No dish id nor name defined")
+
+    class UnknownDishName : RatingError("The dish given does not have an id associated yet")
 }

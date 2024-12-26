@@ -5,7 +5,7 @@ import arrow.core.raise.either
 import arrow.core.right
 import cz.lastaapps.app.config.ServerConfig
 import cz.lastaapps.app.data.RatingRepository
-import cz.lastaapps.app.domain.model.DishName
+import cz.lastaapps.app.domain.model.DishID
 import cz.lastaapps.app.domain.model.DishStatus
 import cz.lastaapps.app.domain.model.DishStatusList
 import cz.lastaapps.app.domain.model.MenzaID
@@ -34,7 +34,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
-private typealias MapItem = PersistentMap<DishName, RatingKinds<RatingGroup>>
+private typealias MapItem = PersistentMap<DishID, RatingKinds<RatingGroup>>
 
 class RatingRepositoryImpl(
     private val config: ServerConfig,
@@ -61,7 +61,7 @@ class RatingRepositoryImpl(
                     return RatingError.MenzaQuotaReached().left()
                 }
 
-                val flow = MutableStateFlow(clock.now() to persistentMapOf<DishName, RatingKinds<RatingGroup>>())
+                val flow = MutableStateFlow(clock.now() to persistentMapOf<DishID, RatingKinds<RatingGroup>>())
                 map = map.put(menzaID, flow)
                 val mappedFlow = flow
                     .map { (timeStamp, data) -> timeStamp to data.mapToDishState() }
@@ -82,7 +82,7 @@ class RatingRepositoryImpl(
             if (dishMap.size >= config.maxDishes) {
                 return RatingError.DishQuotaReached().left()
             }
-            dishMap[request.dishName]?.let {
+            dishMap[request.dishId]?.let {
                 val audience = maxOf(it.taste.audience, it.portion.audience, it.worthiness.audience)
                 if (audience.toInt() >= config.maxPerDay) {
                     return RatingError.RequestQuotaReached().left()
@@ -91,8 +91,8 @@ class RatingRepositoryImpl(
 
             instant = clock.now()
             instant to dishMap.put(
-                request.dishName,
-                dishMap.getOrDefault(request.dishName, RatingGroup.defaultKinds).let { ratings ->
+                request.dishId,
+                dishMap.getOrDefault(request.dishId, RatingGroup.defaultKinds).let { ratings ->
                     RatingKinds(
                         ratings.taste + request.kinds.taste,
                         ratings.portion + request.kinds.portion,
@@ -110,10 +110,10 @@ class RatingRepositoryImpl(
 
     private suspend fun incRequests() = mutex.withLock { requestCounter++ }
 
-    private fun PersistentMap<DishName, RatingKinds<RatingGroup>>.mapToDishState() =
+    private fun PersistentMap<DishID, RatingKinds<RatingGroup>>.mapToDishState() =
         map { (id, progress) ->
             DishStatus(
-                id = id,
+                dishID = id,
                 categories = progress,
             )
         }

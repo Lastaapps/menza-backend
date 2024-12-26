@@ -8,9 +8,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class RatePayload(
-    val taste: UInt?,
-    val portion: UInt?,
-    val worthiness: UInt?,
+    val dishID: String? = null,
+    val nameCs: String? = null,
+    val nameEn: String? = null,
+    val taste: UInt? = null,
+    val portion: UInt? = null,
+    val worthiness: UInt? = null,
 )
 
 internal fun RatePayload.toDomain() = either {

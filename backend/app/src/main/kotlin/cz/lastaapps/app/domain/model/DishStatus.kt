@@ -1,7 +1,7 @@
 package cz.lastaapps.app.domain.model
 
 data class DishStatus(
-    val id: DishName,
+    val dishID: DishID,
     val categories: RatingKinds<RatingGroup>,
 )
 

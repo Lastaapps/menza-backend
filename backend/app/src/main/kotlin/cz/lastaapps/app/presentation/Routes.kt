@@ -2,9 +2,11 @@ package cz.lastaapps.app.presentation
 
 import arrow.core.Either
 import arrow.core.raise.either
+import cz.lastaapps.app.domain.model.DishID
 import cz.lastaapps.app.domain.model.DishName
 import cz.lastaapps.app.domain.model.MenzaID
 import cz.lastaapps.app.domain.model.RatingRequest
+import cz.lastaapps.app.domain.usecase.GetDishNameUseCase
 import cz.lastaapps.app.domain.usecase.GetRatingStateUseCase
 import cz.lastaapps.app.domain.usecase.GetStatisticsUseCase
 import cz.lastaapps.app.domain.usecase.RateUseCase
@@ -28,6 +30,7 @@ internal class Routes(
     private val app: Application,
     private val rateUC: RateUseCase,
     private val getStateUC: GetRatingStateUseCase,
+    private val getDishNameUC: GetDishNameUseCase,
     private val statisticsUC: GetStatisticsUseCase,
 ) {
     fun register() {
@@ -43,14 +46,18 @@ internal class Routes(
     }
 
     private fun Route.rateEP() {
-        post("rate/{menza_id}/{dish_name}") {
+        post("rate/{menza_id}") {
             val payload = call.receive<RatePayload>()
             val res = either {
                 val menzaID = MenzaID.fromString(call.parameters["menza_id"]!!).bind()
-                val dishName = DishName.fromString(call.parameters["dish_name"]!!).bind()
+                val dishID = payload.dishID?.let { DishID.from(it).bind() }
+                val nameCs = payload.nameCs?.let { DishName.from(it).bind() }
+                val nameEn = payload.nameEn?.let { DishName.from(it).bind() }
+                val dishName =
+                    getDishNameUC(GetDishNameUseCase.Params(menzaID, dishID, nameCs, nameEn)).bind()
                 val request = RatingRequest(
                     menzaID = menzaID,
-                    dishName = dishName,
+                    dishId = dishName.id,
                     kinds = payload.toDomain().bind(),
                 )
                 rateUC(RateUseCase.Params(request)).bind()

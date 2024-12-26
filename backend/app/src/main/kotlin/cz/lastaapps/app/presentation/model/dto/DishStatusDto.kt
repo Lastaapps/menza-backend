@@ -1,6 +1,6 @@
 package cz.lastaapps.app.presentation.model.dto
 
-import cz.lastaapps.app.domain.model.DishStatus
+import cz.lastaapps.app.domain.model.NamedDishStatus
 import cz.lastaapps.app.domain.model.RatingKind
 import cz.lastaapps.app.domain.model.combined
 import kotlinx.serialization.Serializable
@@ -8,6 +8,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DishStatusDto(
     val id: String,
+    val nameCs: String?,
+    val nameEn: String?,
     val combined: RatingDto,
     val taste: RatingDto,
     val portion: RatingDto,
@@ -15,10 +17,12 @@ data class DishStatusDto(
 )
 
 
-fun List<DishStatus>.toDto() = map { it.toDto() }
+fun List<NamedDishStatus>.toDto() = map { it.toDto() }
 
-fun DishStatus.toDto() = DishStatusDto(
-    id = id.id,
+fun NamedDishStatus.toDto() = DishStatusDto(
+    id = dishDescriptor.id.id,
+    nameCs = dishDescriptor.nameCs?.value,
+    nameEn = dishDescriptor.nameEn?.value,
     combined = categories.combined().toDto(),
     taste = categories.get(RatingKind.TASTE).toDto(),
     portion = categories.get(RatingKind.PORTION).toDto(),
