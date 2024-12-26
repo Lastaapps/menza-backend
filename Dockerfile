@@ -1,9 +1,11 @@
-FROM gradle:8.12.0-jdk21 AS build
-COPY --chown=gradle:gradle . /home/gradle/src
+FROM gradle:8.12.0-jdk21-alpine AS build
+ADD --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle :backend:app:shadowJar --no-daemon
 
-FROM openjdk:21
+# Should use JRE and slim variant of Debian (or Oracle Linux)
+# Java 21+ required, higher is better as it has new security fixes
+FROM openjdk:24-slim
 EXPOSE 8080:8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/backend/app/build/libs/app-all.jar /app/app.jar
