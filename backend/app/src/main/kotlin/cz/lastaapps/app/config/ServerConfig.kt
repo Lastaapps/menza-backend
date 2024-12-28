@@ -2,6 +2,7 @@ package cz.lastaapps.app.config
 
 import io.ktor.server.application.host
 import io.ktor.server.config.ApplicationConfig
+import kotlinx.datetime.TimeZone
 
 enum class Environment {
     PRODUCTION,
@@ -15,6 +16,7 @@ data class ServerConfig(
     val usesSSL: Boolean,
     val apiKeys: Set<String>,
     val environment: Environment,
+    val timeZone: TimeZone,
     val maxMenzas: Int,
     val maxDishes: Int,
     val maxPerDay: Int,
@@ -40,6 +42,7 @@ data class ServerConfig(
                             else -> error("Unsupported env: $it")
                         }
                     },
+                    timeZone = TimeZone.of(property("app.timeZone").getString()),
                     maxMenzas = property("app.maxMenzas").getString().toInt(),
                     maxDishes = property("app.maxDishes").getString().toInt(),
                     maxPerDay = property("app.maxPerDay").getString().toInt(),

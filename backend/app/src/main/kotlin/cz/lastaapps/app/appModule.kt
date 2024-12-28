@@ -17,12 +17,15 @@ import cz.lastaapps.app.domain.usecase.GetStatisticsUseCaseImpl
 import cz.lastaapps.app.domain.usecase.RateUseCase
 import cz.lastaapps.app.domain.usecase.RateUseCaseImpl
 import cz.lastaapps.app.presentation.Routes
+import kotlinx.datetime.Clock
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal val appModule =
     module {
+        single { Clock.System } bind Clock::class
         single<RatingRepository> { RatingRepositoryImpl(get()) }
         singleOf(::ClearCronImpl) { bind<ClearCron>() }
         singleOf(::Routes)

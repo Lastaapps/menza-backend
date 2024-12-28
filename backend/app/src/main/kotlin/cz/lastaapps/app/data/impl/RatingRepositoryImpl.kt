@@ -51,7 +51,10 @@ class RatingRepositoryImpl(
     private val mutex = Mutex()
 
     override suspend fun resetRepository() {
-        mutex.withLock { map = persistentMapOf() }
+        mutex.withLock {
+            map = persistentMapOf()
+            outerMap = persistentMapOf()
+        }
     }
 
     private suspend fun getMap(menzaID: MenzaID): Outcome<Pair<MutableStateFlow<Pair<Instant, MapItem>>, SharedFlow<Pair<Instant, DishStatusList>>>> {
