@@ -17,12 +17,14 @@ import cz.lastaapps.app.domain.usecase.GetStatisticsUseCaseImpl
 import cz.lastaapps.app.domain.usecase.RateUseCase
 import cz.lastaapps.app.domain.usecase.RateUseCaseImpl
 import cz.lastaapps.app.presentation.Routes
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
+@OptIn(ExperimentalTime::class)
 internal val appModule =
     module {
         single { Clock.System } bind Clock::class

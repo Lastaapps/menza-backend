@@ -1,29 +1,29 @@
 [versions]
-google-ksp = "2.1.20-Beta1-1.0.29"
+google-ksp = "2.3.3"
 # @keep
 java-jvmTarget = "21"
-junit5-bom = "5.11.4"
-koin = "4.1.0-Beta1"
-kotest = "6.0.0.M1"
-kotlin = "2.1.20-Beta1"
-kotlin-coroutines = "1.10.1"
+junit5-bom = "6.0.1"
+koin = "4.1.1"
+kotest = "6.0.5"
+kotlin = "2.2.21"
+kotlin-coroutines = "1.10.2"
 # @keep
-kotlin-languageVersion = "2.1"
-ktlint = "12.1.2"
-ktor = "3.0.3"
-shadow = "8.1.1"
+kotlin-languageVersion = "2.2"
+ktlint = "14.0.1"
+ktor = "3.3.3"
+shadow = "9.2.2"
 
 [libraries]
-arrowkt-bom = "io.arrow-kt:arrow-stack:2.0.0"
+arrowkt-bom = "io.arrow-kt:arrow-stack:2.2.0"
 arrowkt-core = { module = "io.arrow-kt:arrow-core" }
 arrowkt-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
 arrowkt-fx-stm = { module = "io.arrow-kt:arrow-fx-stm" }
 gradlePlugins-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-gradlePlugins-shadow = { module = "com.github.johnrengelman:shadow", version.ref = "shadow" }
+gradlePlugins-shadow = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version.ref = "shadow" }
 junit5-bom = { module = "org.junit:junit-bom", version.ref = "junit5-bom" }
 junit5-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 junit5-jupiter-runtime = { module = "org.junit.jupiter:junit-jupiter-engine" }
-kmLogging = "org.lighthousegames:logging:1.5.0"
+kmLogging = "org.lighthousegames:logging:2.0.3"
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin" }
 koin-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin" }
@@ -44,9 +44,9 @@ kotlin-test-common = { module = "org.jetbrains.kotlin:kotlin-test-common" }
 kotlin-test-jUnit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
 kotlin-test-jUnit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
 kotlin-test-jvm = { module = "org.jetbrains.kotlin:kotlin-test" }
-kotlinx-collection = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8"
-kotlinx-dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
-kotlinx-serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0-RC"
+kotlinx-collection = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0"
+kotlinx-dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
+kotlinx-serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
 ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
 ktor-server-autoHeadResponse = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
 ktor-server-caching = { module = "io.ktor:ktor-server-caching-headers", version.ref = "ktor" }
@@ -64,10 +64,9 @@ ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor"
 ktor-server-partialContent = { module = "io.ktor:ktor-server-partial-content", version.ref = "ktor" }
 ktor-server-sesstions = { module = "io.ktor:ktor-server-sessions", version.ref = "ktor" }
 ktor-server-statusPages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
-logback = "ch.qos.logback:logback-classic:1.5.15"
+logback = "ch.qos.logback:logback-classic:1.5.21"
 
 [plugins]
-benNamesVersions = "com.github.ben-manes.versions:0.51.0"
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 java-kotlin = { id = "kotlin" }
 java-library = { id = "java-library" }
@@ -75,5 +74,5 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
-versionCatalogUpdate = "nl.littlerobots.version-catalog-update:0.8.5"
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+versionCatalogUpdate = "nl.littlerobots.version-catalog-update:1.0.1"

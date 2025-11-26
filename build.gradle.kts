@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
 
     alias(libs.plugins.ktlint)
-    alias(libs.plugins.benNamesVersions)
     alias(libs.plugins.versionCatalogUpdate)
 }
 
@@ -16,7 +15,5 @@ versionCatalogUpdate {
     // keeps entry - wouldn't be deleted when unused
     keep {
         keepUnusedVersions.set(true)
-        keepUnusedLibraries.set(true)
-        keepUnusedPlugins.set(true)
     }
 }

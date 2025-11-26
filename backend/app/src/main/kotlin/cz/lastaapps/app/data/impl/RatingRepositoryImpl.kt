@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package cz.lastaapps.app.data.impl
 
 import arrow.core.left
@@ -14,7 +16,10 @@ import cz.lastaapps.app.domain.model.RatingKinds
 import cz.lastaapps.app.domain.model.RatingRequest
 import cz.lastaapps.base.Outcome
 import cz.lastaapps.base.error.RatingError
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.CoroutineScope
@@ -31,8 +36,6 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 
 private typealias MapItem = PersistentMap<DishID, RatingKinds<RatingGroup>>
 

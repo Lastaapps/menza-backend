@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package cz.lastaapps.app.data.impl
 
 import cz.lastaapps.app.config.ServerConfig
@@ -5,10 +7,11 @@ import cz.lastaapps.app.data.ClearCron
 import cz.lastaapps.app.data.DishNameRepository
 import cz.lastaapps.app.data.RatingRepository
 import cz.lastaapps.app.data.StatisticsRepository
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -29,6 +32,7 @@ class ClearCronImpl(
         private val log = logging()
     }
 
+    @OptIn(ExperimentalTime::class)
     override fun start() {
         scope.launch {
             while (true) {
