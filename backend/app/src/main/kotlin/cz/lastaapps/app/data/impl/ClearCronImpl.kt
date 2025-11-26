@@ -4,6 +4,7 @@ import cz.lastaapps.app.config.ServerConfig
 import cz.lastaapps.app.data.ClearCron
 import cz.lastaapps.app.data.DishNameRepository
 import cz.lastaapps.app.data.RatingRepository
+import cz.lastaapps.app.data.StatisticsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,7 +21,7 @@ class ClearCronImpl(
     private val config: ServerConfig,
     private val repo: RatingRepository,
     private val namesRepo: DishNameRepository,
-    private val statistics: RatingRepository,
+    private val statistics: StatisticsRepository,
     private val clock: Clock,
     private val scope: CoroutineScope,
 ) : ClearCron {
@@ -40,7 +41,7 @@ class ClearCronImpl(
                     log.i { "Starting job" }
                     repo.resetRepository()
                     namesRepo.resetRepository()
-                    statistics.resetRepository()
+                    statistics.reset()
                     System.gc()
                 } catch (e: Exception) {
                     log.e(e) { "Job failed" }
