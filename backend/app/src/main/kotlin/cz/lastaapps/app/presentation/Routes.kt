@@ -19,6 +19,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.RoutingCall
 import io.ktor.server.routing.get
@@ -42,6 +43,7 @@ internal class Routes(
                     statisticsEP()
                 }
             }
+            healthcheckEP()
         }
     }
 
@@ -88,6 +90,12 @@ internal class Routes(
         when (res) {
             is Either.Right -> respond(res.value)
             is Either.Left -> respondWithError(res)
+        }
+    }
+
+    private fun Route.healthcheckEP() {
+        get("health") {
+            call.respondText("Zdravý jako řípa.")
         }
     }
 }
